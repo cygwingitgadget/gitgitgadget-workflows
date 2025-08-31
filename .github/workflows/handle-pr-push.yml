@@ -84,7 +84,7 @@ jobs:
           -f "output[text]=$text" \
           --jq '"check_run_id=\(.id)"')"
         echo "check_run_id=$check_run_id" >> $GITHUB_OUTPUT
-    - uses: gitgitgadget/gitgitgadget/handle-pr-push@v1
+    - uses: dscho/gitgitgadget/handle-pr-push@v1
       with:
         config: ${{ vars.CONFIG }}
         pr-repo-token: ${{ steps.pr-repo-token.outputs.token }}
