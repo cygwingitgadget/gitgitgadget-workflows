@@ -45,7 +45,7 @@ jobs:
         private-key: ${{ secrets.GITGITGADGET_READONLY_GITHUB_APP_PRIVATE_KEY }}
         owner: ${{ fromJSON(vars.CONFIG).repo.testOwner }}
         repositories: ${{ fromJSON(vars.CONFIG).repo.name }}
-    - uses: gitgitgadget/gitgitgadget/check-run@v1
+    - uses: dscho/gitgitgadget/check-run@v1
       with:
         config: ${{ vars.CONFIG }}
         pr-repo-token: ${{ steps.pr-repo-token.outputs.token }}
@@ -56,7 +56,7 @@ jobs:
         title: Handle PR comment
         summary: Handling PR comment ${{ env.PR_COMMENT_URL }}
         text: This handles ${{ env.PR_COMMENT_URL }}, see ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} for details.
-    - uses: gitgitgadget/gitgitgadget/handle-pr-comment@v1
+    - uses: dscho/gitgitgadget/handle-pr-comment@v1
       with:
         config: ${{ vars.CONFIG }}
         pr-repo-token: ${{ steps.pr-repo-token.outputs.token }}
