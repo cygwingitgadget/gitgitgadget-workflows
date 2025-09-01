@@ -48,6 +48,7 @@ jobs:
     - name: create a check run
       id: create-check-run
       run: |
+        set -x
         title="Handle PR push"
         summary="Handling new commits in $PR_URL"
         details_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
@@ -83,7 +84,7 @@ jobs:
           -f "output[text]=$text" \
           --jq '"check_run_id=\(.id)"')"
         echo "check_run_id=$check_run_id" >> $GITHUB_OUTPUT
-    - uses: gitgitgadget/gitgitgadget/handle-pr-push@v1
+    - uses: dscho/gitgitgadget/handle-pr-push@v1
       with:
         config: ${{ vars.CONFIG }}
         pr-repo-token: ${{ steps.pr-repo-token.outputs.token }}
