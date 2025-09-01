@@ -56,6 +56,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ steps.token.outputs.token }}
       run: |
+        set -x
         backoff=0
         while (
           git push https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$TARGET_GITHUB_REPOSITORY "$MIRROR_REF"
