@@ -18,7 +18,7 @@ jobs:
         private-key: ${{ secrets.GITGITGADGET_GITHUB_APP_PRIVATE_KEY }}
         owner: ${{ fromJSON(vars.CONFIG).repo.owner }}
         repositories: ${{ fromJSON(vars.CONFIG).repo.name }}
-    - uses: gitgitgadget/gitgitgadget/initialize-git-notes@v1
+    - uses: dscho/gitgitgadget/initialize-git-notes@v1
       with:
         config: ${{ vars.CONFIG }}
         pr-repo-token: ${{ steps.pr-repo-token.outputs.token }}
