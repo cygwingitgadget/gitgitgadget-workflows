@@ -10,6 +10,7 @@ env:
 
 jobs:
   job:
+    if: vars.CONFIG != ''
     runs-on: ubuntu-latest
     permissions:
       contents: write
