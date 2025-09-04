@@ -1,42 +1,35 @@
 {
   "repo": {
-    "name": "git",
-    "owner": "gitgitgadget",
-    "upstreamOwner": "git",
-    "baseOwner": "git",
-    "testOwner": "dscho",
+    "name": "cygwin",
+    "owner": "cygwingitgadget",
+    "upstreamOwner": "cygwin",
+    "baseOwner": "cygwin",
     "owners": [
-      "gitgitgadget",
-      "git",
-      "dscho"
+      "cygwingitgadget"
     ],
     "branches": [
-      "maint",
-      "seen"
+      "main"
     ],
     "closingBranches": [
-      "maint",
-      "master"
+      "main",
+      "cygwin-3_6-branch"
     ],
     "trackingBranches": [
-      "maint",
-      "seen",
-      "master",
-      "next"
+      "main",
+      "cygwin-3_6-branch"
     ],
-    "maintainerBranch": "gitster",
     "host": "github.com"
   },
   "mailrepo": {
-    "name": "git",
-    "owner": "gitgitgadget",
+    "name": "cygwin-patches-list-mirror",
+    "owner": "cygwingitgadget",
     "branch": "master",
-    "host": "lore.kernel.org",
-    "url": "https://lore.kernel.org/git/",
-    "public_inbox_epoch": 1,
-    "mirrorURL": "https://github.com/gitgitgadget/git-mailing-list-mirror",
-    "mirrorRef": "refs/heads/lore-1",
-    "descriptiveName": "lore.kernel/git"
+    "host": "inbox.sourceware.org",
+    "url": "https://inbox.sourceware.org/cygwin-patches/",
+    "public_inbox_epoch": 0,
+    "mirrorURL": "https://github.com/cygwingitgadget/cygwin-patches-list-mirror",
+    "mirrorRef": "refs/heads/master",
+    "descriptiveName": "inbox.sourceware.org/cygwin-patches"
   },
   "mail": {
     "author": "GitGitGadget",
@@ -45,42 +38,30 @@
     "smtpHost": "smtp.gmail.com"
   },
   "project": {
-    "//": "The Git maintainer specifically requested not to be Cc:ed",
+    "to": "cygwin-patches@cygwin.com",
+    "branch": "upstream/master",
     "cc": [],
-    "to": "git@vger.kernel.org",
-    "urlPrefix": "https://lore.kernel.org/git/"
+    "urlPrefix": "https://inbox.sourceware.org/cygwin-patches/"
   },
   "app": {
-    "appID": 12836,
-    "installationID": 195971,
-    "name": "gitgitgadget",
+    "appID": 1869939,
+    "installationID": 83540339,
+    "name": "cygwingitgadget",
     "displayName": "GitGitGadget",
     "installedOn": [
-      "gitgitgadget",
-      "git",
-      "dscho"
-    ],
-    "altname": "gitgitgadget-git"
+      "cygwingitgadget"
+    ]
   },
   "lint": {
-    "maxCommitsIgnore": [
-      "https://github.com/gitgitgadget/git/pull/923"
-    ],
+    "maxCommitsIgnore": [],
     "maxCommits": 30
   },
   "user": {
-    "allowUserAsLogin": false
+    "allowUserAsLogin": true
   },
-  "syncUpstreamBranches": [
-    {
-      "sourceRepo": "gitster/git",
-      "targetRepo": "gitgitgadget/git",
-      "sourceRefRegex": "^refs/heads/(maint-\\d|[a-z][a-z]/)"
-    },
-    {
-      "sourceRepo": "j6t/git-gui",
-      "targetRepo": "gitgitgadget/git",
-      "targetRefNamespace": "git-gui/"
-    }
-  ]
+  "syncUpstreamBranches": [{
+    "sourceRepo": "cygwin/cygwin",
+    "targetRepo": "cygwingitgadget/cygwin",
+    "sourceRefRegex": "^refs/heads/(main|cygwin-\\d+_\\d+-branch)$"
+  }]
 }
