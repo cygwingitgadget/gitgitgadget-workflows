@@ -1,41 +1,34 @@
 {
   "repo": {
-    "name": "git",
-    "owner": "gitgitgadget",
-    "baseOwner": "git",
-    "testOwner": "dscho",
+    "name": "cygwin",
+    "owner": "cygwingitgadget",
+    "baseOwner": "cygwin",
     "owners": [
-      "gitgitgadget",
-      "git",
-      "dscho"
+      "cygwingitgadget"
     ],
     "branches": [
-      "maint",
-      "seen"
+      "main"
     ],
     "closingBranches": [
-      "maint",
-      "master"
+      "main",
+      "cygwin-3_6-branch"
     ],
     "trackingBranches": [
-      "maint",
-      "seen",
-      "master",
-      "next"
+      "main",
+      "cygwin-3_6-branch"
     ],
-    "maintainerBranch": "gitster",
     "host": "github.com"
   },
   "mailrepo": {
-    "name": "git",
-    "owner": "gitgitgadget",
-    "branch": "master",
-    "host": "lore.kernel.org",
-    "url": "https://lore.kernel.org/git/",
-    "public_inbox_epoch": 1,
-    "mirrorURL": "https://github.com/gitgitgadget/git-mailing-list-mirror",
-    "mirrorRef": "refs/heads/lore-1",
-    "descriptiveName": "lore.kernel/git"
+    "name": "cygwin-patches-list-mirror",
+    "owner": "cygwingitgadget",
+    "branch": "main",
+    "host": "inbox.sourceware.org",
+    "url": "https://inbox.sourceware.org/cygwin-patches/",
+    "public_inbox_epoch": 0,
+    "mirrorURL": "https://github.com/cygwingitgadget/cygwin-patches-list-mirror",
+    "mirrorRef": "refs/heads/master",
+    "descriptiveName": "inbox.sourceware.org/cygwin-patches"
   },
   "mail": {
     "author": "GitGitGadget",
@@ -51,24 +44,21 @@
     "altname": "gitgitgadget-git"
   },
   "lint": {
-    "maxCommitsIgnore": [
-      "https://github.com/gitgitgadget/git/pull/923"
-    ],
+    "maxCommitsIgnore": [],
     "maxCommits": 30
   },
   "user": {
-    "allowUserAsLogin": false
+    "allowUserAsLogin": true
   },
-  "syncUpstreamBranches": [
-    {
-      "sourceRepo": "gitster/git",
-      "targetRepo": "gitgitgadget/git",
-      "sourceRefRegex": "^refs/heads/(maint-\\d|[a-z][a-z]/)"
-    },
-    {
-      "sourceRepo": "j6t/git-gui",
-      "targetRepo": "gitgitgadget/git",
-      "targetRefNamespace": "git-gui/"
-    }
-  ]
+  "syncUpstreamBranches": [{
+    "sourceRepo": "cygwin/cygwin",
+    "targetRepo": "cygwingitgadget/cygwin",
+    "sourceRefRegex": "^refs/heads/(main|cygwin-\\d+_\\d+_branch)$"
+  }],
+  "project": {
+    "to": "--to=cygwin-patches@cygwin.com",
+    "branch": "upstream/master",
+    "cc": [],
+    "urlPrefix": "https://inbox.sourceware.org/cygwin-patches/"
+  }
 }
