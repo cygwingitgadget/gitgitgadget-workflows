@@ -2,6 +2,7 @@
   "repo": {
     "name": "git",
     "owner": "gitgitgadget",
+    "upstreamOwner": "git",
     "baseOwner": "git",
     "testOwner": "dscho",
     "owners": [
@@ -48,6 +49,11 @@
     "installationID": 195971,
     "name": "gitgitgadget",
     "displayName": "GitGitGadget",
+    "installedOn": [
+      "gitgitgadget",
+      "git",
+      "dscho"
+    ],
     "altname": "gitgitgadget-git"
   },
   "lint": {
