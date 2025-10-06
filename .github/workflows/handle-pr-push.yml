@@ -45,44 +45,17 @@ jobs:
         private-key: ${{ secrets.GITGITGADGET_READONLY_GITHUB_APP_PRIVATE_KEY }}
         owner: ${{ fromJSON(vars.CONFIG).repo.testOwner }}
         repositories: ${{ fromJSON(vars.CONFIG).repo.name }}
-    - name: create a check run
-      id: create-check-run
-      run: |
-        title="Handle PR push"
-        summary="Handling new commits in $PR_URL"
-        details_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-        text="This handles $PR_URL, see $details_url for details."
-        echo "title=$title" >> $GITHUB_OUTPUT
-        echo "summary=$summary" >> $GITHUB_OUTPUT
-        echo "text=$text" >> $GITHUB_OUTPUT
-
-        PR_NUMBER="${PR_URL##*/}" # skip the prefix before the PR number
-        PR_REPO="${PR_URL%/pull/$PR_NUMBER*}" # skip the suffix including the PR number
-        PR_REPO="${PR_REPO#https://*/}"
-
-        export GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-        eval "$(gh api repos/$PR_REPO/pulls/$PR_NUMBER \
-          --jq '"head_sha=\(.head.sha) && repo=\(.base.repo.full_name)"')"
-        echo "head_sha=$head_sha" >> $GITHUB_OUTPUT
-        echo "repo=$repo" >> $GITHUB_OUTPUT
-
-        export GH_TOKEN="$(case "$repo" in
-          '${{ fromJSON(vars.CONFIG).repo.owner }}/${{ fromJSON(vars.CONFIG).repo.name }}') echo "${{ steps.pr-repo-token.outputs.token }}";;
-          '${{ fromJSON(vars.CONFIG).repo.baseOwner }}/${{ fromJSON(vars.CONFIG).repo.name }}') echo "${{ steps.upstream-repo-token.outputs.token }}";;
-          '${{ fromJSON(vars.CONFIG).repo.testOwner }}/${{ fromJSON(vars.CONFIG).repo.name }}') echo "${{ steps.test-repo-token.outputs.token }}";;
-          *) echo "${{ secrets.GITHUB_TOKEN }}";;
-          esac
-        )"
-        eval "$(gh api repos/$repo/check-runs -X POST \
-          -f name='handle_pr_push' \
-          -f head_sha="$head_sha" \
-          -f status='in_progress' \
-          -f details_url="$details_url" \
-          -f "output[title]=$title" \
-          -f "output[summary]=$summary" \
-          -f "output[text]=$text" \
-          --jq '"check_run_id=\(.id)"')"
-        echo "check_run_id=$check_run_id" >> $GITHUB_OUTPUT
+    - uses: gitgitgadget/gitgitgadget/check-run@v1
+      with:
+        config: ${{ vars.CONFIG }}
+        pr-repo-token: ${{ steps.pr-repo-token.outputs.token }}
+        upstream-repo-token: ${{ steps.upstream-repo-token.outputs.token }}
+        test-repo-token: ${{ steps.test-repo-token.outputs.token }}
+        pr-url: ${{ env.PR_URL }}
+        name: handle_pr_push
+        title: Handling new commits in ${{ env.PR_URL }}
+        summary: Handling PR ${{ env.PR_URL }}
+        text: This handles ${{ env.PR_URL }}, see ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} for details.
     - uses: gitgitgadget/gitgitgadget/handle-pr-push@v1
       with:
         config: ${{ vars.CONFIG }}
@@ -90,20 +63,3 @@ jobs:
         upstream-repo-token: ${{ steps.upstream-repo-token.outputs.token }}
         test-repo-token: ${{ steps.test-repo-token.outputs.token }}
         pr-url: ${{ env.PR_URL }}
-    - name: update the check run
-      if: always() && steps.create-check-run.outputs.check_run_id != ''
-      run: |
-        export GH_TOKEN="$(case "${{ steps.create-check-run.outputs.repo }}" in
-          '${{ fromJSON(vars.CONFIG).repo.owner }}/${{ fromJSON(vars.CONFIG).repo.name }}') echo "${{ steps.pr-repo-token.outputs.token }}";;
-          '${{ fromJSON(vars.CONFIG).repo.baseOwner }}/${{ fromJSON(vars.CONFIG).repo.name }}') echo "${{ steps.upstream-repo-token.outputs.token }}";;
-          '${{ fromJSON(vars.CONFIG).repo.testOwner }}/${{ fromJSON(vars.CONFIG).repo.name }}') echo "${{ steps.test-repo-token.outputs.token }}";;
-          *) echo "${{ secrets.GITHUB_TOKEN }}";;
-          esac
-        )"
-        gh api repos/${{ steps.create-check-run.outputs.repo }}/check-runs/${{ steps.create-check-run.outputs.check_run_id }} \
-          -X PATCH \
-          -f status='completed' \
-          -f conclusion='${{ job.status }}' \
-          -f 'output[title]=${{ steps.create-check-run.outputs.title }}' \
-          -f 'output[summary]=${{ steps.create-check-run.outputs.summary }}' \
-          -f 'output[text]=${{ steps.create-check-run.outputs.text }}'
