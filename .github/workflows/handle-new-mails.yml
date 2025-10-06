@@ -24,16 +24,16 @@ jobs:
       if: ${{ contains(fromJSON(vars.CONFIG).repo.owners, fromJSON(vars.CONFIG).repo.baseOwner) }}
       id: upstream-repo-token
       with:
-        app-id: ${{ secrets.GITGITGADGET_GIT_GITHUB_APP_ID }}
-        private-key: ${{ secrets.GITGITGADGET_GIT_GITHUB_APP_PRIVATE_KEY }}
+        app-id: ${{ secrets.GITGITGADGET_READONLY_GITHUB_APP_ID }}
+        private-key: ${{ secrets.GITGITGADGET_READONLY_GITHUB_APP_PRIVATE_KEY }}
         owner: ${{ fromJSON(vars.CONFIG).repo.baseOwner }}
         repositories: ${{ fromJSON(vars.CONFIG).repo.name }}
     - uses: actions/create-github-app-token@v2
       if: ${{ contains(fromJSON(vars.CONFIG).repo.owners, fromJSON(vars.CONFIG).repo.testOwner) }}
       id: test-repo-token
       with:
-        app-id: ${{ secrets.GITGITGADGET_GIT_GITHUB_APP_ID }}
-        private-key: ${{ secrets.GITGITGADGET_GIT_GITHUB_APP_PRIVATE_KEY }}
+        app-id: ${{ secrets.GITGITGADGET_READONLY_GITHUB_APP_ID }}
+        private-key: ${{ secrets.GITGITGADGET_READONLY_GITHUB_APP_PRIVATE_KEY }}
         owner: ${{ fromJSON(vars.CONFIG).repo.testOwner }}
         repositories: ${{ fromJSON(vars.CONFIG).repo.name }}
     - uses: gitgitgadget/gitgitgadget/handle-new-mails@v1
