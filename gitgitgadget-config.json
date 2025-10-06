@@ -54,7 +54,10 @@
   },
   "lint": {
     "maxCommitsIgnore": [],
-    "maxCommits": 30
+    "maxCommits": 30,
+    "commitLintOptions": {
+      "maxColumns": 120
+    }
   },
   "user": {
     "allowUserAsLogin": true
