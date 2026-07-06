@@ -57,3 +57,27 @@ jobs:
             done
             exit 1
           }
+      - name: Obtain a token to reset the inactivity timer
+        uses: actions/create-github-app-token@v3
+        id: token
+        with:
+          app-id: ${{ secrets.GITGITGADGET_GITHUB_APP_ID }}
+          private-key: ${{ secrets.GITGITGADGET_GITHUB_APP_PRIVATE_KEY }}
+      - name: Reset the 60-day inactivity timer of every active workflow
+        env:
+          GH_TOKEN: ${{ steps.token.outputs.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          ret=0
+          gh api "/repos/$REPO/actions/workflows" --paginate \
+              --jq '.workflows[] | select(.state == "active") | .path' |
+          while read -r path
+          do
+            name=${path##*/}
+            echo "Refreshing $name"
+            gh workflow -R "$REPO" enable "$name" || {
+              echo "::error::could not refresh $name; please ensure that it is enabled!" >&2
+              ret=1
+            }
+          done
+          exit $ret
