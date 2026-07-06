@@ -25,28 +25,12 @@ jobs:
           git fetch https://github.com/gitgitgadget/gitgitgadget-workflows HEAD &&
           if test 0 = $(git rev-list --count HEAD..FETCH_HEAD)
           then
-            exit 0 # let the next step create a commit
+            exit 0 # nothing to merge
           fi &&
           git merge --no-edit FETCH_HEAD &&
           echo "result=merged" >>$GITHUB_OUTPUT
-      - name: Create a commit
-        id: commit
-        if: steps.merge.outputs.result != 'merged'
-        run: |
-          if test workflow_dispatch != '${{ github.event_name }}' &&
-            test 0 -lt $(git rev-list --count --since=3.weeks.ago HEAD)
-          then
-            echo "::notice::No need to keep alive, there were commits in the last three weeks"
-            echo "result=skip-push" >>$GITHUB_OUTPUT
-            exit 0
-          fi &&
-          mkdir -p .github/cached
-          file='.github/cached/keepalive.txt'
-          date >$file
-          git add "$file"
-          git commit -m "workflow keepalive"
       - name: Push changes
-        if: steps.commit.outputs.result != 'skip-push'
+        if: steps.merge.outputs.result == 'merged'
         run: |
           git push origin HEAD </dev/null || {
             for i in 1 2 3 4 5
