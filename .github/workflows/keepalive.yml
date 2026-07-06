@@ -75,6 +75,7 @@ jobs:
           do
             name=${path##*/}
             echo "Refreshing $name"
+            gh workflow -R "$REPO" disable "$name" &&
             gh workflow -R "$REPO" enable "$name" || {
               echo "::error::could not refresh $name; please ensure that it is enabled!" >&2
               ret=1
